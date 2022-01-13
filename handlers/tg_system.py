@@ -9,14 +9,18 @@ async def answer_and_finish(message: Message, text: str, state: FSMContext):
     await state.finish()
 
 
-async def reply_and_finish(message: Message, text: str, state: FSMContext):
-    await message.reply(text)
+async def reply_and_finish(message: Message, text: str, state: FSMContext, kb=None):
+    await message.reply(text, reply_markup=kb)
     await state.finish()
 
 
 async def show_problem(message: Message, data: dict):
 
-    s = "id: " + str(data["id"]) + "\nname: " + str(data["name"]) + "\ntext: " + str(data["text"]) + "\ntags: " + str(data["tags"]) + "\n"
+    s = "id: " + str(data["id"]) + \
+        "\nname: " + str(data["name"]) + \
+        "\ntext: " + str(data["text"]) + \
+        "\ntags: " + str(data["tags"]) + "\n"
+
     await message.answer(s)
 
     if str(data["photo"]) != "nan":

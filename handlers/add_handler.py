@@ -29,6 +29,7 @@ async def add_content(message: Message, state: FSMContext):
         data = parse_dict(message.text)
     except BaseException as e:
         await reply_and_finish(message, str(e), state)
+        return
 
     if "name" not in data:
         await reply_and_finish(message, "У каждой задачи должно быть указано поле name", state)
@@ -59,5 +60,6 @@ async def add_photo(message: Message, state: FSMContext):
 
 def register_add(dp: Dispatcher):
     dp.register_message_handler(add_start, commands="add", state="*")
+    dp.register_message_handler(add_start, commands="new", state="*")
     dp.register_message_handler(add_content, state=ProblemAdd.waiting_for_problem)
     dp.register_message_handler(add_photo, content_types=['photo'], state=ProblemAdd.waiting_for_photo)

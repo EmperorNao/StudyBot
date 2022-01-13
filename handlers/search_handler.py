@@ -28,6 +28,7 @@ async def search_content(message: Message, state: FSMContext):
         data = parse_dict(message.text)
     except BaseException as e:
         await reply_and_finish(message, str(e), state)
+        return
 
     if "name" not in data and "id" not in data and "tags" not in data:
         await reply_and_finish(message, "В запросе должно быть указано хотя бы одно из полей: id, name, tags", state)
@@ -45,4 +46,5 @@ async def search_content(message: Message, state: FSMContext):
 
 def register_search(dp: Dispatcher):
     dp.register_message_handler(search_start, commands="search", state="*")
+    dp.register_message_handler(search_start, commands="show", state="*")
     dp.register_message_handler(search_content, state=ProblemSearch.waiting_for_info)
