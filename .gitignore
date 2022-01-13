@@ -1,3 +1,6 @@
 venv/
 .idea/
-token.py
+draft/
+draft2/
+settings.py
+data/
