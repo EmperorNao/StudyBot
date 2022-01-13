@@ -1,10 +1,10 @@
 from os.path import join
+import os
 import pandas as pd
 
-from settings import local_data_path, data_file
+from settings import local_data_path, local_photo_path, data_file
 
 from disk.backuping import disk
-
 
 
 def object_to_csv(data) -> pd.DataFrame():
@@ -70,6 +70,21 @@ class Server:
 
         object_to_csv(data).to_csv(join(local_data_path, data_file), mode='a', index=False, header=False)
         disk.save_object(data)
+
+    def delete_object(self, id):
+
+        id = int(id)
+        data = self.get_data()
+
+        data["id"] = pd.to_numeric(data["id"])
+        deleted = data[data["id"] == id]
+        data = data[data["id"] != id]
+        data.to_csv(join(local_data_path, data_file), index=False, header=True)
+
+        if str(deleted.iloc[0]["photo"]) != "nan":
+            os.remove(join(local_photo_path, deleted.iloc[0]["photo"]))
+
+        disk.delete_object({} if str(deleted.iloc[0]["photo"]) == "nan" else {"photo": deleted.iloc[0]["photo"]})
 
     def get_data(self):
         return pd.read_csv(join(local_data_path, data_file))
