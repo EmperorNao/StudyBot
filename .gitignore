@@ -4,3 +4,4 @@ draft/
 draft2/
 settings.py
 data/
+__pycache__/
