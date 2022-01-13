@@ -19,16 +19,27 @@ class Disk:
     def save_file(self, src, dst, file, overwrite=True):
         self.ya.upload(join(src, file), join(dst, file), overwrite=overwrite)
 
+    def delete_file(self, dst, file):
+        self.ya.remove(join(dst, file), permanently=True)
+
     def save_data(self):
         self.save_file(local_data_path, disk_data_path, data_file)
 
     def save_photo(self, photo):
         self.save_file(local_photo_path, disk_photo_path, photo)
 
+    def delete_photo(self, photo):
+        self.delete_file(disk_photo_path, photo)
+
     def save_object(self, data):
         self.save_data()
         if "photo" in data:
             self.save_photo(data["photo"])
+
+    def delete_object(self, data):
+        self.save_data()
+        if "photo" in data:
+            self.delete_photo(data["photo"])
 
 
 disk = Disk()
