@@ -16,7 +16,7 @@ async def main():
 
     logger = logging.getLogger(__name__)
     logging.basicConfig(
-        #filename=join(local_log_path, log_file),
+        filename=join(local_log_path, log_file),
         level=logging.INFO,
         format=formatter,
         datefmt=date_format
