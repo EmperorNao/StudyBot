@@ -111,7 +111,18 @@ class Server:
                     result_tags.add(row["id"])
 
         res_indexes = result_id.intersection(result_name).intersection(result_tags)
-        return data[data["id"].isin(res_indexes)]
+        return data[data["id"].isin(res_indexes)].sort_values(by="id")
+
+    def get_all_tags(self):
+
+        tags = set()
+        data = self.get_data()
+
+        for index, row in data.iterrows():
+            if str(row["tags"]) != "nan":
+                tags.update(set(row["tags"].split(" ")))
+
+        return sorted(tags)
 
 
 server = Server()
